@@ -34,7 +34,7 @@
   if (showHud) { hud.classList.remove('hide'); hint.classList.remove('hide'); }
 
   function setIndex(next) {
-    i = (next + list.length) % list.length;
+    i = Math.min(Math.max(next, 0), list.length - 1);
     imgEl.src = list[i];
 
     if (showHud) hud.textContent = `${i+1} / ${list.length}`;
@@ -49,12 +49,6 @@
 
   // 初期表示
   setIndex(i);
-
-  // キーボード操作（PC確認用）
-  addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') setIndex(i + 1);
-    if (e.key === 'ArrowLeft')  setIndex(i - 1);
-  });
 
   // スワイプ（スマホ）
   let startX = 0, startY = 0, moved = false;
@@ -73,23 +67,8 @@
     if (!moved) setIndex(i + 1);
   }
 
-  addEventListener('touchstart', (e) => {
-    const t = e.touches[0];
-    onStart(t.clientX, t.clientY);
-  }, {passive:true});
-
-  addEventListener('touchmove', (e) => {
-    const t = e.touches[0];
-    onMove(t.clientX, t.clientY);
-  }, {passive:true});
-
-  addEventListener('touchend', (e) => {
-    const t = e.changedTouches[0];
-    onEnd(t.clientX, t.clientY);
-  }, {passive:true});
-
   // クリック（PC確認用）
-  addEventListener('click', () => setIndex(i + 1));
+
 })();
 </script>
 </body>
